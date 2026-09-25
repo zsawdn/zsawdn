@@ -173,5 +173,32 @@
 })();
 </script>
 
+<script>
+/* 首屏大图头像热区：累计点击 6 次在新标签页打开彩蛋页
+   热区按图片自身尺寸的百分比定位（left 25.8% / top 40.0% / width 9.6% / height 20.0%）
+   仅在图片范围内按点击坐标判定，不新增任何节点或样式，页面视觉与布局保持不变 */
+(function () {
+  var img = document.querySelector('.hero-media img');
+  if (!img) return;
+  var EGG_URL = 'assets/easter-egg/android16-easter-egg-1to1.html';
+  var NEED = 6;
+  var ZONE = { left: 0.258, top: 0.400, width: 0.096, height: 0.200 };
+  var count = 0;
+  img.addEventListener('click', function (e) {
+    var r = img.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    var x = (e.clientX - r.left) / r.width;
+    var y = (e.clientY - r.top) / r.height;
+    if (x < ZONE.left || x > ZONE.left + ZONE.width) return;
+    if (y < ZONE.top || y > ZONE.top + ZONE.height) return;
+    count += 1;
+    if (count >= NEED) {
+      count = 0;
+      window.open(EGG_URL, '_blank');
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
